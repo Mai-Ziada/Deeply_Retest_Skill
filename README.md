@@ -13,6 +13,7 @@ Most "retests" stop at the happy path or trust the API response. This one is bui
 - **Prove the negative** — a "still broken" verdict needs the same evidence rigor as a PASS.
 - **Walk reflection cross-surface** — for Admin->Client (config->reflection) bugs, verify *both* surfaces with the same data, not just the config side.
 - **Deep sanity, not a glance** — risk-scaled scenarios covering main actions, related buttons/filters/forms/tabs/navigation, UI reflection after save, validation, persistence after refresh, gated role/states, and linked flows.
+- **Reports time taken** — records start/end and shows the total retest duration (per-stage in Deep mode).
 
 ## Two modes (you pick at startup)
 

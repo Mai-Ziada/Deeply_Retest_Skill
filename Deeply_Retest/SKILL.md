@@ -1,6 +1,6 @@
 ---
 name: Deeply_Retest
-description: Run a bug retest in one of two modes the user picks at startup — (A) Quick Retest (test the bug, change its GitHub status, add a comment) or (B) Deep Retest (five evidence-driven stages). Use when the user asks to retest, re-verify, or deeply retest a bug/issue, confirm a fix did not break nearby functionality, validate a fix across UI + data + cross-surface reflection, or post a Fixed/Not Fixed/Partially Fixed retest result. Verifies the UI and the backend agree, tests in the correct state, runs risk-scaled deep sanity, covers the related dependency chain. After the mode is chosen and before retesting, it clears cache + cookies and opens a fresh browser session. In Deep Retest, posts the retest status comment and updates GitHub status (Done if fixed; TODO + Reopened label if not) right after the original-bug retest, then runs the remaining stages without posting their results.
+description: Run a bug retest in one of two modes the user picks at startup — (A) Quick Retest (test the bug, change its GitHub status, add a comment) or (B) Deep Retest (five evidence-driven stages). Use when the user asks to retest, re-verify, or deeply retest a bug/issue, confirm a fix did not break nearby functionality, validate a fix across UI + data + cross-surface reflection, or post a Fixed/Not Fixed/Partially Fixed retest result. Verifies the UI and the backend agree, tests in the correct state, runs risk-scaled deep sanity, covers the related dependency chain. After the mode is chosen and before retesting, it clears cache + cookies and opens a fresh browser session. In Deep Retest, posts the retest status comment and updates GitHub status (Done if fixed; TODO + Reopened label if not) right after the original-bug retest, then runs the remaining stages without posting their results. Reports the total time taken for the retest.
 ---
 
 # Deeply_Retest
@@ -33,7 +33,8 @@ Do not start testing until the user picks A or B. If the user already stated the
    - Fixed → status **Done**.
    - Not Fixed → status **TODO** + add the **`Reopened`** label.
    - Post the short status-only comment with one screenshot.
-4. Stop. Do not run deep sanity or mapped-bug coverage in Mode A.
+4. Report the **Time Taken** (retest Start → End duration) in the result.
+5. Stop. Do not run deep sanity or mapped-bug coverage in Mode A.
 
 ### Mode B — Deep Retest (when chosen): run these FIVE stages in order
 1. Preconditions & Readiness Gate
@@ -103,6 +104,12 @@ GLOBAL RULES
 
 **10. Blockers.**
 - If blocked at any stage, stop and ask the user. State the blocker and what's needed. Do not silently narrow scope or guess.
+
+**11. Time tracking.**
+- Record a **Start time** the moment retesting begins (right after the fresh session is up) and an **End time** when the retest finishes, then report the **Total time taken (duration)** in the result.
+- In **Mode A (Quick Retest)**, report the duration in the final result.
+- In **Mode B (Deep Retest)**, report the **total** duration in the Stage 4 Final Output, and a **per-stage breakdown** (Stage 0–4) when available.
+- Use real elapsed clock time; do not estimate or fabricate. If timing can't be captured, say so rather than inventing a number.
 
 **Definitions**
 - Decisive check = shortest path that proves/disproves the behavior with one action + one clear piece of evidence.
@@ -236,6 +243,7 @@ Final Output:
 - Fix Risk (Low / Medium / High) — risk introduced by this fix (scoped to the retest, not whole-release readiness)
 - Chain Coverage (Complete / Incomplete / Not Confirmed)
 - Retest Confidence (High / Medium / Low)
+- **Time Taken** — total retest duration (Start → End), plus a per-stage breakdown (Stage 0–4) when available
 - Recommendation
 
 Retest Confidence Rules:
