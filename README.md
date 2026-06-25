@@ -38,7 +38,7 @@ In **Deep Retest**, the status comment + GitHub status update happen **once, rig
 | **0 — Preconditions & Readiness Gate** | Build reachable, screen loads, role/creds, test data, subject still exists. BLOCKED early beats fabricated output. Classifies the bug role. |
 | **1 — Original Bug Retest** | Reproduce exactly. Verify **UI + persisted data**. Pass / Fail / Not Reproducible. |
 | **2 — Deep Focused Screen/Module Sanity** | Risk-scaled (typically 3-10) focused scenarios around the fix; replacement scenarios generated from the bug + related map bugs. |
-| **3 — Mapped/Related Bugs Coverage** | One decisive check per related bug (cap 6); cross-surface and triad/workflow checks; chain-coverage verdict. |
+| **3 — Mapped/Related Bugs Coverage** | One decisive check per related bug (cap 6); cross-surface and triad/workflow checks; chain-coverage verdict. **If a related-bug check looks blocked, it asks you first before marking it blocked.** |
 | **4 — Final QA Decision + Retest Comment** | One final status + a short, professional, status-only ticket comment with a screenshot. |
 
 Final statuses: `PASS` / `PASS WITH OBSERVATIONS` / `FAIL` / `FAIL - SIDE EFFECT` / `FAIL - DEPENDENCY` / `NOT REPRODUCIBLE` / `BLOCKED`.
@@ -60,8 +60,9 @@ Then invoke it with `/Deeply_Retest` and provide a Bug ID (or the INPUT block fr
 
 ## Notes
 
-- Tracker/scope details in `SKILL.md` (e.g. GitHub Project number, `read:project` comment-only policy) are project-specific — adjust them to your own environment.
-- The skill posts **comments only**; it does not move board cards or change ticket status.
+- Tracker details in `SKILL.md` (e.g. the GitHub Project number) are project-specific — adjust them to your own environment.
+- The skill posts a short status comment **and** updates the bug's GitHub status from the retest result (Fixed -> Done; Not Fixed -> TODO + `Reopened` label). If the token lacks project write scope, it posts the comment and asks you to apply the status/label change.
+- During mapped/related-bug checks, if something appears blocked it **asks you before** recording it as blocked.
 
 ## License
 
