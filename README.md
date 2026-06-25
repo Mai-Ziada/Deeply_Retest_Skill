@@ -1,4 +1,4 @@
-# Deeply_Retest — Senior QA Retest Skill
+# Smart Re-Test — Senior QA Retest Skill
 
 A Claude Code / Codex **skill** for running a **targeted, evidence-driven bug retest** (not a full regression cycle). It verifies a fix the right way — UI *and* persisted data must agree — runs a risk-scaled deep sanity pass around the same screen/module, checks the related dependency chain, and posts one concise status-only comment on the issue.
 
@@ -56,16 +56,16 @@ Final statuses: `PASS` / `PASS WITH OBSERVATIONS` / `FAIL` / `FAIL - SIDE EFFECT
 
 **Claude Code:**
 ```bash
-git clone https://github.com/Mai-Ziada/Deeply_Retest_Skill.git
-cp -r Deeply_Retest_Skill/Deeply_Retest ~/.claude/skills/
+git clone https://github.com/Mai-Ziada/Smart_ReTest_Skill.git
+cp -r Smart_ReTest_Skill/Smart_ReTest ~/.claude/skills/
 ```
 
 **Codex:**
 ```bash
-cp -r Deeply_Retest_Skill/Deeply_Retest ~/.codex/skills/
+cp -r Smart_ReTest_Skill/Smart_ReTest ~/.codex/skills/
 ```
 
-Then invoke it with `/Deeply_Retest` and provide a Bug ID (or the INPUT block from `SKILL.md`).
+Then invoke it with `/Smart_ReTest` and provide a Bug ID (or the INPUT block from `SKILL.md`).
 
 ## Notes
 

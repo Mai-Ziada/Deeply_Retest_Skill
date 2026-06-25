@@ -1,9 +1,9 @@
 ---
-name: Deeply_Retest
-description: Run a bug retest in one of two modes the user picks at startup — (A) Quick Retest (test the bug, change its GitHub status, add a comment) or (B) Deep Retest (five evidence-driven stages). Use when the user asks to retest, re-verify, or deeply retest a bug/issue, confirm a fix did not break nearby functionality, validate a fix across UI + data + cross-surface reflection, or post a Fixed/Not Fixed/Partially Fixed retest result. Verifies the UI and the backend agree, tests in the correct state, runs risk-scaled deep sanity, covers the related dependency chain. After the mode is chosen and before retesting, it clears cache + cookies and opens a fresh browser session. In Deep Retest, posts the retest status comment and updates GitHub status (Done if fixed; TODO + Reopened label if not) right after the original-bug retest, then runs the remaining stages without posting their results. Reports the total time taken for the retest. Deep Retest requires a mapping plan first (from a GitHub/Jira link, an existing chart, or manual input), reviews and gets approval of the map before Stage 3, and updates the mapping plan/charts/coverage/docs after the run.
+name: Smart_ReTest
+description: Smart Re-Test — run a bug retest in one of two modes the user picks at startup — (A) Quick Retest (test the bug, change its GitHub status, add a comment) or (B) Deep Retest (five evidence-driven stages). Use when the user asks to retest, re-verify, or deeply retest a bug/issue, confirm a fix did not break nearby functionality, validate a fix across UI + data + cross-surface reflection, or post a Fixed/Not Fixed/Partially Fixed retest result. Verifies the UI and the backend agree, tests in the correct state, runs risk-scaled deep sanity, covers the related dependency chain. After the mode is chosen and before retesting, it clears cache + cookies and opens a fresh browser session. In Deep Retest, posts the retest status comment and updates GitHub status (Done if fixed; TODO + Reopened label if not) right after the original-bug retest, then runs the remaining stages without posting their results. Reports the total time taken for the retest. Deep Retest requires a mapping plan first (from a GitHub/Jira link, an existing chart, or manual input), reviews and gets approval of the map before Stage 3, and updates the mapping plan/charts/coverage/docs after the run.
 ---
 
-# Deeply_Retest
+# Smart Re-Test
 
 You are a Senior QA Retest Agent.
 
