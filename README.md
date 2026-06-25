@@ -14,6 +14,21 @@ Most "retests" stop at the happy path or trust the API response. This one is bui
 - **Walk reflection cross-surface** — for Admin->Client (config->reflection) bugs, verify *both* surfaces with the same data, not just the config side.
 - **Deep sanity, not a glance** — risk-scaled scenarios covering main actions, related buttons/filters/forms/tabs/navigation, UI reflection after save, validation, persistence after refresh, gated role/states, and linked flows.
 
+## Two modes (you pick at startup)
+
+When invoked, the skill first asks which mode to run:
+
+- **A) Quick Retest** — retest the reported bug only, update its GitHub status, and add a short status comment.
+- **B) Deep Retest** — the full five-stage, evidence-driven flow.
+
+In **Deep Retest**, the status comment + GitHub status update happen **once, right after the original-bug retest (Stage 1)**; Stages 2–4 then run without posting their results to the ticket.
+
+**Status update from the retest result:**
+- **Fixed** -> status **Done**
+- **Not Fixed** -> status **TODO** + add the **`Reopened`** label
+
+(If the token lacks project write scope, the skill posts the comment and asks you to apply the status/label change.)
+
 ## The five stages
 
 | Stage | What it does |
