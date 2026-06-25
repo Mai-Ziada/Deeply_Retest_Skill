@@ -32,6 +32,14 @@ In **Deep Retest**, the status comment + GitHub status update happen **once, rig
 
 (If the token lacks project write scope, the skill posts the comment and asks you to apply the status/label change.)
 
+## Mapping (Deep Retest)
+
+Deep Retest is map-driven:
+
+- **Before the stages** — if no mapping plan exists, the skill asks you to pick a source to build one: **GitHub link**, **Jira link**, an **existing chart**, or **manual input**. It creates the plan first, then runs the stages.
+- **Before Stage 3** — it shows the mapping plan and waits for you to **approve / modify / add / remove** items. Stage 3 does not run until the map is approved.
+- **After the run** — it updates all mapping artifacts (mapping plan, testing chart, coverage chart, related files, linked docs) to reflect what was actually tested and any new flows, dependencies, validations, edge cases, risks, or gaps found.
+
 ## The five stages
 
 | Stage | What it does |

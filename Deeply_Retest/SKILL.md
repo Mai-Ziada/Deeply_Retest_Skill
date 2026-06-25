@@ -1,6 +1,6 @@
 ---
 name: Deeply_Retest
-description: Run a bug retest in one of two modes the user picks at startup — (A) Quick Retest (test the bug, change its GitHub status, add a comment) or (B) Deep Retest (five evidence-driven stages). Use when the user asks to retest, re-verify, or deeply retest a bug/issue, confirm a fix did not break nearby functionality, validate a fix across UI + data + cross-surface reflection, or post a Fixed/Not Fixed/Partially Fixed retest result. Verifies the UI and the backend agree, tests in the correct state, runs risk-scaled deep sanity, covers the related dependency chain. After the mode is chosen and before retesting, it clears cache + cookies and opens a fresh browser session. In Deep Retest, posts the retest status comment and updates GitHub status (Done if fixed; TODO + Reopened label if not) right after the original-bug retest, then runs the remaining stages without posting their results. Reports the total time taken for the retest.
+description: Run a bug retest in one of two modes the user picks at startup — (A) Quick Retest (test the bug, change its GitHub status, add a comment) or (B) Deep Retest (five evidence-driven stages). Use when the user asks to retest, re-verify, or deeply retest a bug/issue, confirm a fix did not break nearby functionality, validate a fix across UI + data + cross-surface reflection, or post a Fixed/Not Fixed/Partially Fixed retest result. Verifies the UI and the backend agree, tests in the correct state, runs risk-scaled deep sanity, covers the related dependency chain. After the mode is chosen and before retesting, it clears cache + cookies and opens a fresh browser session. In Deep Retest, posts the retest status comment and updates GitHub status (Done if fixed; TODO + Reopened label if not) right after the original-bug retest, then runs the remaining stages without posting their results. Reports the total time taken for the retest. Deep Retest requires a mapping plan first (from a GitHub/Jira link, an existing chart, or manual input), reviews and gets approval of the map before Stage 3, and updates the mapping plan/charts/coverage/docs after the run.
 ---
 
 # Deeply_Retest
@@ -44,6 +44,21 @@ Do not start testing until the user picks A or B. If the user already stated the
 5. Final QA Decision + Retest Comment
 
 **Deep Retest posting rule (important):** post to the bug ticket **only once**, right after **Stage 1 (Original Bug Retest)** — the retest status comment + the GitHub status update (Done / TODO+Reopened) per the Retest Status & Status-Update Rule. Then run Stages 2–4 and **do NOT post their results on the bug ticket**; keep deep-sanity and mapped-bug findings in the QA report / run memory only.
+
+#### Deep Retest — Mapping Plan Prerequisite (before the stages)
+
+When Deep Retest is chosen, first check whether an existing **mapping plan** is available (e.g. a causal map, testing chart, coverage chart, or a saved retest-map for this feature/bug/story).
+
+**If a mapping plan already exists**, load it and continue (it will be reviewed at the Stage 3 gate).
+
+**If no mapping plan exists, do NOT continue directly.** Ask the user to choose ONE source to generate the initial map, then build the plan before running the stages:
+
+1. **GitHub link** — use the repository/issues/branches/PRs to understand the feature or bug scope and create the mapping plan.
+2. **Jira link** — use the ticket details, acceptance criteria, comments, attachments, and linked bugs/tasks to create the mapping plan.
+3. **Existing chart** — use the provided chart as the base structure for the testing map.
+4. **Manual user input** — ask the user for the feature, bug, flow, scope, expected behavior, and any known dependencies, then generate the mapping plan from that input.
+
+After receiving the selected source, **create the mapping plan first**, then continue with the Deep Retest stages.
 
 ====================
 STEP 0.5 — FRESH SESSION PREREQUISITE (after mode is chosen, before any retest)
@@ -200,6 +215,15 @@ STAGE 3 — MAPPED / RELATED BUGS COVERAGE
 
 Skip if Stage 1 = FAIL. Goal: confirm the fix holds across the related dependency chain, not just the single ticket. (Covers other tickets — not the screen already done in Stage 2.)
 
+**Stage 3 Mapping Review (gate — do this BEFORE executing any Stage 3 check):**
+Display the mapping plan related to the bug / feature / user story being tested so the user can review it before execution. Ask whether they want to:
+- **Approve** the mapping plan as is.
+- **Modify** specific parts of the map.
+- **Add** missing flows, validations, dependencies, or edge cases.
+- **Remove** irrelevant items.
+
+Do NOT proceed with Stage 3 execution until the map is **approved** or updated based on the user's feedback. Apply any requested changes to the plan, then re-confirm before running the coverage checks.
+
 Rules:
 - Root under test: verify root first, then spot-check direct dependents.
 - Dependent under test: root must already be verified; if root fails → FAIL - DEPENDENCY.
@@ -288,3 +312,19 @@ If the token lacks the project write scope to change status / add the label, pos
 Rules:
 - Keep the comment concise. No full repro steps or full analysis in the ticket — detailed findings stay in the QA report / run memory.
 - Attach/include one relevant screenshot from the screen/module URL after retesting.
+
+====================
+POST DEEP TEST UPDATES (Mode B — after every Deep Retest run)
+
+After every Deep Retest execution, **update all related mapping artifacts** so future runs use the latest validated version:
+- Mapping plan
+- Testing chart
+- Coverage chart
+- Related files
+- Any linked bug / feature documentation
+
+The update must reflect **what was actually tested, what changed, what was added, what was removed, and any new risks, gaps, or dependencies** discovered during the Deep Retest.
+
+If the run reveals **new flows, hidden dependencies, missed validations, or additional edge cases**, update the mapping plan and chart **immediately** so the next test run starts from the latest validated map.
+
+This applies to Mode B (Deep Retest). Mode A (Quick Retest) does not maintain the mapping artifacts.
