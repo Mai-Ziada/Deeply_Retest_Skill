@@ -21,6 +21,8 @@ When invoked, the skill first asks which mode to run:
 - **A) Quick Retest** — retest the reported bug only, update its GitHub status, and add a short status comment.
 - **B) Deep Retest** — the full five-stage, evidence-driven flow.
 
+After the mode is chosen and **before retesting**, the skill clears **cache + cookies** and opens a **fresh browser session**, so the retest reflects the real current build (not a cached page or stale login).
+
 In **Deep Retest**, the status comment + GitHub status update happen **once, right after the original-bug retest (Stage 1)**; Stages 2–4 then run without posting their results to the ticket.
 
 **Status update from the retest result:**

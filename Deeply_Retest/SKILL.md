@@ -1,6 +1,6 @@
 ---
 name: Deeply_Retest
-description: Run a bug retest in one of two modes the user picks at startup — (A) Quick Retest (test the bug, change its GitHub status, add a comment) or (B) Deep Retest (five evidence-driven stages). Use when the user asks to retest, re-verify, or deeply retest a bug/issue, confirm a fix did not break nearby functionality, validate a fix across UI + data + cross-surface reflection, or post a Fixed/Not Fixed/Partially Fixed retest result. Verifies the UI and the backend agree, tests in the correct state, runs risk-scaled deep sanity, covers the related dependency chain. In Deep Retest, posts the retest status comment and updates GitHub status (Done if fixed; TODO + Reopened label if not) right after the original-bug retest, then runs the remaining stages without posting their results.
+description: Run a bug retest in one of two modes the user picks at startup — (A) Quick Retest (test the bug, change its GitHub status, add a comment) or (B) Deep Retest (five evidence-driven stages). Use when the user asks to retest, re-verify, or deeply retest a bug/issue, confirm a fix did not break nearby functionality, validate a fix across UI + data + cross-surface reflection, or post a Fixed/Not Fixed/Partially Fixed retest result. Verifies the UI and the backend agree, tests in the correct state, runs risk-scaled deep sanity, covers the related dependency chain. After the mode is chosen and before retesting, it clears cache + cookies and opens a fresh browser session. In Deep Retest, posts the retest status comment and updates GitHub status (Done if fixed; TODO + Reopened label if not) right after the original-bug retest, then runs the remaining stages without posting their results.
 ---
 
 # Deeply_Retest
@@ -43,6 +43,19 @@ Do not start testing until the user picks A or B. If the user already stated the
 5. Final QA Decision + Retest Comment
 
 **Deep Retest posting rule (important):** post to the bug ticket **only once**, right after **Stage 1 (Original Bug Retest)** — the retest status comment + the GitHub status update (Done / TODO+Reopened) per the Retest Status & Status-Update Rule. Then run Stages 2–4 and **do NOT post their results on the bug ticket**; keep deep-sanity and mapped-bug findings in the QA report / run memory only.
+
+====================
+STEP 0.5 — FRESH SESSION PREREQUISITE (after mode is chosen, before any retest)
+
+After the user picks the mode and **before you start retesting** (Mode A or Mode B), start from a clean browser state so stale auth/cache cannot mask or fake a result:
+
+1. **Clear cache.**
+2. **Clear cookies.**
+3. **Open a NEW browser session** (fresh/isolated context), then navigate to the target and log in cleanly.
+
+Apply this to both modes. The intent: the retest must reflect the real current build, not a cached page, an old bundle, or a leftover logged-in session. Prefer a fresh/isolated browser context (e.g., a new isolated Playwright/Chrome MCP context, or an incognito/clean profile). If the environment cannot clear cache/cookies or open a fresh session, say so and ask the user how to proceed before testing (do not silently continue on a dirty session).
+
+After the fresh session is up and you have logged in, proceed to Stage 0 (Mode B) or to the Mode A retest.
 
 ====================
 GLOBAL RULES
@@ -122,6 +135,7 @@ If blank, derive only relationships confirmed by the causal map, linked tickets,
 STAGE 0 — PRECONDITIONS & READINESS GATE
 
 Confirm the retest can actually run. Check and record:
+- **Fresh session done** (cache cleared, cookies cleared, new session opened per STEP 0.5) before any check here
 - Build/version reachable · Screen URL loads · Required role available · Credentials work
 - Test data available or safely creatable · Bug ID + original repro present
 - The bug subject still exists (not deleted, retired, or inaccessible)
